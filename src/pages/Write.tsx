@@ -5,7 +5,8 @@ import "@toast-ui/editor/dist/i18n/ko-kr";
 import { Editor } from "@toast-ui/react-editor";
 import colorSyntax from "@toast-ui/editor-plugin-color-syntax";
 import codeSyntaxHighlight from "@toast-ui/editor-plugin-code-syntax-highlight";
-import { useRef } from "react";
+import AddIcon from "@mui/icons-material/Add";
+import { useRef, useState } from "react";
 import {
   Box,
   Button,
@@ -16,24 +17,68 @@ import {
   Stack,
   TextField,
 } from "@mui/material";
+import { useForm } from "react-hook-form";
+import { useSeriesList, useWriteContents } from "../api/contents";
+import { ArrowForward } from "@mui/icons-material";
 
 const WritePage = () => {
+  const [isNewSeries, setIsNewSeries] = useState(false);
   const editorRef = useRef<Editor>(null);
+
+  //const { data: seriesList } = useSeriesList();
+  const { mutate: contentsMutate } = useWriteContents();
+
+  const { handleSubmit, register, getValues } = useForm();
+
+  const onClickSubmit = () => {
+    const { Title } = getValues();
+    contentsMutate({
+      Title: Title,
+      Description: editorRef.current?.getInstance().getMarkdown() || "",
+      SeriesTitle: "시리즈 제목",
+      SeriesId: null,
+    });
+  };
 
   return (
     <Stack gap={2}>
-      <FormControl fullWidth>
-        <InputLabel>시리즈를 선택해주세요.</InputLabel>
-        <Select label="시리즈를 선택해주세요.">
-          <MenuItem>새로 만들기</MenuItem>
-          <MenuItem>내가 만든 시리즈1</MenuItem>
-          <MenuItem>내가 만든 시리즈2</MenuItem>
-          <MenuItem>내가 만든 시리즈3</MenuItem>
-        </Select>
-      </FormControl>
+      {isNewSeries ? (
+        <FormControl fullWidth>
+          <TextField
+            {...register("SeriesTitle")}
+            label="새로운 시리즈 이름을 입력해주세요."
+          />
+          <Box display={"flex"} justifyContent={"end"}>
+            <Button
+              size="small"
+              endIcon={<ArrowForward />}
+              onClick={() => setIsNewSeries(false)}
+            >
+              기존 시리즈에서 선택하기
+            </Button>
+          </Box>
+        </FormControl>
+      ) : (
+        <FormControl fullWidth>
+          <InputLabel>시리즈를 선택해주세요.</InputLabel>
+          <Select label="시리즈를 선택해주세요.">
+            <MenuItem onClick={() => setIsNewSeries(true)}>
+              <Button startIcon={<AddIcon />}>새로 만들기</Button>
+            </MenuItem>
+            {/* {seriesList?.SeriesList.map((series) => (
+              <MenuItem>{series.Title}</MenuItem>
+            ))} */}
+          </Select>
+        </FormControl>
+      )}
 
       <FormControl fullWidth>
-        <TextField label="제목을 입력해주세요." />
+        <TextField
+          {...register("Title", {
+            required: "title is required",
+          })}
+          label="제목을 입력해주세요."
+        />
       </FormControl>
 
       <Editor
@@ -56,7 +101,9 @@ const WritePage = () => {
       />
 
       <Box display={"flex"} justifyContent={"end"}>
-        <Button variant="contained">작성 완료</Button>
+        <Button onClick={handleSubmit(onClickSubmit)} variant="contained">
+          작성 완료
+        </Button>
       </Box>
     </Stack>
   );
