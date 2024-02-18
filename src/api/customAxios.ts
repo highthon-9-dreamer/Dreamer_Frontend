@@ -6,7 +6,7 @@ export const instance = axios.create({
   timeout: 10000,
   headers: {
     "X-Auth-Token":
-      "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJlM2E2M2I2OS03MmFhLTQ0NGItOGRlOS0zOTVhNTgwMmQ2MDgiLCJpYXQiOjE3MDgyMTQ1NzAsImV4cCI6MTcwODIyNDU3MH0.SPtQ2AwvMoVBAhNgfnSDvWyFDLlsWQNe3OotpoUjaSsup4SOUHnt3-KXg27h9dLtG62DC864tnNf0z7ozqo3Rg",
+      "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNzA4MjE3MDQ0LCJleHAiOjE3MDgyMjcwNDR9.sgnPQv09gP_GJKH40NVhRWSigeBpItWb7MupYplb--Dclb1AJ4_6dRmW-z3lE6xx2eHqGakumdu8ecrivfszPQ",
   },
 });
 

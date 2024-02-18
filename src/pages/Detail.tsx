@@ -10,6 +10,8 @@ import {
 } from "@mui/material";
 import { ArrowForwardIosSharp } from "@mui/icons-material";
 import { useParams } from "react-router-dom";
+import "@toast-ui/editor/dist/toastui-editor-viewer.css";
+import { useEffect } from "react";
 
 const DetailPage = () => {
   const { id: Id } = useParams();
@@ -42,7 +44,7 @@ const DetailPage = () => {
           <Box position={"relative"}>
             <Typography
               variant="caption"
-              top={7}
+              top={8}
               left={4}
               color={"#FFFFFF"}
               position={"absolute"}
@@ -57,16 +59,23 @@ const DetailPage = () => {
       </Stack>
 
       <Box display={"flex"} gap={1} alignItems={"center"}>
-        <Avatar src={contentsDetail?.User.Profile} />
+        <Avatar src={contentsDetail?.CreatedBy.Profile} />
+
         <Box>
-          <Typography variant="body1">{contentsDetail?.User.Name}</Typography>
+          <Typography variant="body1">
+            {contentsDetail?.CreatedBy.Name}
+          </Typography>
           <Typography variant="body2" color={"GrayText"}>
             2024.02.18
           </Typography>
         </Box>
       </Box>
       <Divider />
-      <Viewer initialValue={contentsDetail?.Description} />
+
+      <Viewer
+        key={contentsDetail?.Description}
+        initialValue={contentsDetail?.Description}
+      />
     </Stack>
   );
 };

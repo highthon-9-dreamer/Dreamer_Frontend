@@ -14,7 +14,7 @@ interface GetPostDetailResponse {
   SeriesTitle: string;
   Number: number;
   Description: string;
-  User: {
+  CreatedBy: {
     UserId: number;
     Profile: string;
     Name: string;
@@ -40,7 +40,7 @@ const writeContents = async (body: PostRequest) => {
 };
 
 const getContentsDetail = async (id: number) => {
-  return (await instance.get<GetPostDetailResponse>(`/content/${id}`)).data;
+  return (await instance.get<GetPostDetailResponse>(`/c/${id}`)).data;
 };
 
 const getSeriesList = async () => {
@@ -57,7 +57,7 @@ export const useWriteContents = () => {
 
 export const useContentsDetail = (id: number) => {
   return useQuery({
-    queryKey: ["/notice", id],
+    queryKey: ["/c", id],
     queryFn: () => getContentsDetail(id),
   });
 };
