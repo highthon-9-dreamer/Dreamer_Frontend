@@ -14,6 +14,7 @@ import {
   InputLabel,
   MenuItem,
   Select,
+  SelectChangeEvent,
   Stack,
   TextField,
 } from "@mui/material";
@@ -23,9 +24,15 @@ import { ArrowForward } from "@mui/icons-material";
 
 const WritePage = () => {
   const [isNewSeries, setIsNewSeries] = useState(false);
+  const [seriesId, setSeriesId] = useState<number | null>(null);
+
+  const handleChange = (e: SelectChangeEvent<number | null>) => {
+    setSeriesId(e.target.value as number | null);
+  };
+
   const editorRef = useRef<Editor>(null);
 
-  //const { data: seriesList } = useSeriesList();
+  const { data: seriesList } = useSeriesList();
   const { mutate: contentsMutate } = useWriteContents();
 
   const { handleSubmit, register, getValues } = useForm();
@@ -36,7 +43,7 @@ const WritePage = () => {
       Title: Title,
       Description: editorRef.current?.getInstance().getMarkdown() || "",
       SeriesTitle: "시리즈 제목",
-      SeriesId: null,
+      SeriesId: seriesId,
     });
   };
 
@@ -61,13 +68,17 @@ const WritePage = () => {
       ) : (
         <FormControl fullWidth>
           <InputLabel>시리즈를 선택해주세요.</InputLabel>
-          <Select label="시리즈를 선택해주세요.">
+          <Select
+            value={seriesId}
+            onChange={(e) => handleChange(e)}
+            label="시리즈를 선택해주세요."
+          >
             <MenuItem onClick={() => setIsNewSeries(true)}>
               <Button startIcon={<AddIcon />}>새로 만들기</Button>
             </MenuItem>
-            {/* {seriesList?.SeriesList.map((series) => (
-              <MenuItem>{series.Title}</MenuItem>
-            ))} */}
+            {seriesList?.SeriesList?.map((series) => (
+              <MenuItem value={series.Id}>{series.Title}</MenuItem>
+            ))}
           </Select>
         </FormControl>
       )}

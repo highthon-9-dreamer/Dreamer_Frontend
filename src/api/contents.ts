@@ -44,7 +44,7 @@ const getContentsDetail = async (id: number) => {
 };
 
 const getSeriesList = async () => {
-  return (await instance.get<GetSeriesListResponse>("")).data;
+  return (await instance.get<GetSeriesListResponse>("/s/my-series")).data;
 };
 
 export const useWriteContents = () => {
@@ -64,7 +64,7 @@ export const useContentsDetail = (id: number) => {
 
 export const useSeriesList = () => {
   return useQuery({
-    queryKey: [""],
+    queryKey: ["/s/my-series"],
     queryFn: () => getSeriesList(),
   });
 };
