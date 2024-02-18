@@ -2,7 +2,7 @@ import axios, { AxiosError } from "axios";
 import Cookies from "universal-cookie";
 
 export const instance = axios.create({
-  baseURL: "http://192.168.10.148:8080",
+  baseURL: "https://192.168.10.148:8080",
   timeout: 10000,
   headers: {
     "X-Auth-Token":

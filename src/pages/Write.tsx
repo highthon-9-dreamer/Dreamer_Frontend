@@ -6,7 +6,7 @@ import { Editor } from "@toast-ui/react-editor";
 import colorSyntax from "@toast-ui/editor-plugin-color-syntax";
 import codeSyntaxHighlight from "@toast-ui/editor-plugin-code-syntax-highlight";
 import AddIcon from "@mui/icons-material/Add";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   Box,
   Button,
@@ -47,6 +47,10 @@ const WritePage = () => {
     });
   };
 
+  useEffect(() => {
+    console.log(seriesList);
+  }, [seriesList]);
+
   return (
     <Stack gap={2}>
       {isNewSeries ? (
@@ -72,12 +76,15 @@ const WritePage = () => {
             value={seriesId}
             onChange={(e) => handleChange(e)}
             label="시리즈를 선택해주세요."
+            key={seriesList?.SeriesList?.map((series) => series.Id).join("")}
           >
             <MenuItem onClick={() => setIsNewSeries(true)}>
               <Button startIcon={<AddIcon />}>새로 만들기</Button>
             </MenuItem>
             {seriesList?.SeriesList?.map((series) => (
-              <MenuItem value={series.Id}>{series.Title}</MenuItem>
+              <MenuItem key={series.Id} value={series.Id}>
+                {series.Title}
+              </MenuItem>
             ))}
           </Select>
         </FormControl>

@@ -11,7 +11,6 @@ import {
 import { ArrowForwardIosSharp } from "@mui/icons-material";
 import { useParams } from "react-router-dom";
 import "@toast-ui/editor/dist/toastui-editor-viewer.css";
-import { useEffect } from "react";
 
 const DetailPage = () => {
   const { id: Id } = useParams();
